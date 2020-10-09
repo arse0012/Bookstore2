@@ -12,15 +12,44 @@
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-  <title>Hello app</title>
+  <title>Bookstore</title>
 </head>
 
 <body>
-  <h1>Hello</h1>
+  <h1>Bookstore</h1>
   <div id="app">
-    <input v-model="name" placeholder="Name">
-    <button v-on:click="sayHello()" class="btn btn-primary">Say hello</button>
-    <div>{{ greeting }}</div>
+    <h2>GET</h2>
+    <button id="GetAllButton" class="btn btn-primary">Get all books</button>
+    
+    
+    
+
+    <h2>POST</h2>
+    <input placeholder="title" type="text"/>
+    <input placeholder="author" type="text"/>
+    <input placeholder="publisher" type="text"/>
+    <input placeholder="price" type="number"/>
+    <button v-on:click="addBook()" class="btn btn-success">Add</button>
+    <div>{{addMessage}}</div>
+
+    <h2>GET (id)</h2>
+    <input  placeholder="id" type="number" />
+    <button class="btn btn-primary">Get by id</button>
+
+
+    <h2>PUT (id)</h2>
+    <input  placeholder="id" type="number" />
+    <input placeholder="title" type="text"/>
+    <input placeholder="author" type="text"/>
+    <input placeholder="publisher" type="text"/>
+    <input placeholder="price" type="number"/>
+    <button class="btn btn-primary">PUT</button>
+
+    <h2>DELETE (id)</h2>
+    <input  placeholder="id" type="number" />
+    <button class="btn btn-warning">Delete</button>
+    
+
   </div>
 
   <script src="bundle.js"></script>
