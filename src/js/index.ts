@@ -11,7 +11,7 @@ interface IBook {
     price: number
 }
 
-let baseUrl: string = "https://arsen-bookstore.azurewebsites.net/"
+let baseUrl: string = "http://anbo-bookstorerest.azurewebsites.net/api/books "
 
 new Vue({
     // TypeScript compiler complains about Vue because the CDN link to Vue is in the html file.
@@ -19,49 +19,87 @@ new Vue({
     // which is included at the bottom of the html file.
     el: "#app",
     data: {
+        name: "",
+        greeting: "",
         books: [],
-        vendortoGetby: "",
-        singleBook: 0,
-        deleteId: 0,
-        deleteMessage: "",
-        addData: { model: "", vendor: "", price: 0 },
+        id: "",
+        book: null,
+        inputData: { title: "", author: "", publisher: "", price: 0 },
         addMessage: "",
-        putData: { id: 0, model: "", vendor: "", price: 0 },
-        putMessage: ""
+        idToDelete: 0,
+        deleteMessage: "",
+        idToMessage: "",
+        idToUpdate: "",
+        updateData: { id: 0, title: "", author: "", publisher: "", price: 0 },
+        updateMessage: ""
+    },
+    created(): void {
+        console.log("created")
+        this.getAllBooks();
     },
     methods: {
-        getAllBooks() {
-            this.helperGetAndShow(baseUrl)
-        },
-        helperGetAndShow(url: string ) {
-            axios.get<IBook[]>(url)
+        getAllBooks(): void  {
+            axios.get<IBook[]>(baseUrl)
             .then((response: AxiosResponse<IBook[]>) => {
                 this.books = response.data
+            })
+            .catch((error: AxiosError) => {
+                this.message = error.message
+            })
+        },
+        getBook(id: number): void {
+            let url: string = baseUrl + "/" + id
+            axios.get<IBook>(url)
+            .then((response: AxiosResponse<IBook>) => {
+                this.book = response.data
             })
             .catch((error: AxiosError) => {
                 alert(error.message)
             })
         },
-        addBook() {
-            axios.post<IBook>(baseUrl, this.addData)
-                .then((response: AxiosResponse) => {
-                    let message: string = "response" + response.status + " " + response.statusText
-                    this.addMessage = message
+        addBook(): void  {
+            console.log("addBook")
+            axios.post<number>(baseUrl, this.inputData)
+            .then((response: AxiosResponse<number>) => {
+                this.addMessage = "Book added"
+                this.getAllBooks()
+            })
+            .catch((error: AxiosError) => {
+                alert(error.message)
+            })
+        },
+        updateBook(id: number): void {
+            let url : string = baseUrl + "/" + id
+            console.log("update book " + url)
+            axios.put<number>(url, this.updateData)
+            .then((response: AxiosResponse<number>) => {
+                if(response.data == 1) {
+                    this.updateMessage = "Book updated"
                     this.getAllBooks()
-                })
-                .catch((error: AxiosError) => {
-
-                    alert(error.message)
-                })
+                } else {
+                    this.updateMessage = "No such book"
+                }
+            })
+            .catch((error: AxiosError) => {
+                alert(error.message)
+            })
         },
-        getById() {
-
-        },
-        putbook() {
-
-        },
-        deleteBook() {
-
+        deleteBook(id: number): void  {
+            let url : string = baseUrl + "/" + id
+            console.log("deleteBook" + url)
+            axios.delete<number>(url)
+            .then((response: AxiosResponse<number>) => {
+                console.log("deleteBook result" + response.data)
+                if(response.data == 1) {
+                this.deleteMessage = "Book deleted"
+                this.getAllBooks()
+                } else {
+                    this.deleteMessage = "No such book"
+                }
+            })
+            .catch((error: AxiosError) => {
+                alert(error.message)
+            })
         }
     }
 })

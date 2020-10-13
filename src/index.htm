@@ -18,36 +18,45 @@
 <body>
   <h1>Bookstore</h1>
   <div id="app">
-    <h2>GET</h2>
-    <button id="GetAllButton" class="btn btn-primary">Get all books</button>
-    
-    
+    <h2>All Books</h2>
+    <button id="GetAllButton" v-on:click="getAllBooks()" class="btn btn-primary">Get all books</button>
     
 
-    <h2>POST</h2>
-    <input placeholder="title" type="text"/>
-    <input placeholder="author" type="text"/>
-    <input placeholder="publisher" type="text"/>
-    <input placeholder="price" type="number"/>
+    <ul id="booklist" v-if="books.length">
+      <li v-for="book in books">{{book.id}} : {{book.title}} {{book.author}} {{book.publisher}} {{book.price}}
+      </li>
+    </ul>
+    <div v-else>No books</div>
+    
+    <h2>Book by id</h2>
+    <input v-model="id" placeholder="id" type="number" />
+    <button v-on:click="getBook(id)" class="btn btn-primary">Get Book</button>
+    <div v-if="book">{{ book }}</div>
+    <div v-else>No books</div>
+
+    <h2>Add book</h2>
+    <input v-model="inputData.title" placeholder="title" type="text"/>
+    <input v-model="inputData.author" placeholder="author" type="text"/>
+    <input v-model="inputData.publisher" placeholder="publisher" type="text"/>
+    <input v-model="inputData.price" placeholder="price" type="number"/>
     <button v-on:click="addBook()" class="btn btn-success">Add</button>
     <div>{{addMessage}}</div>
 
-    <h2>GET (id)</h2>
-    <input  placeholder="id" type="number" />
-    <button class="btn btn-primary">Get by id</button>
+    
 
-
-    <h2>PUT (id)</h2>
-    <input  placeholder="id" type="number" />
-    <input placeholder="title" type="text"/>
-    <input placeholder="author" type="text"/>
-    <input placeholder="publisher" type="text"/>
-    <input placeholder="price" type="number"/>
-    <button class="btn btn-primary">PUT</button>
+    <h2>Update book</h2>
+    <input v-model="idToUpdate" placeholder="id" type="number" />
+    <input v-model="updateData.title" placeholder="title" type="text"/>
+    <input v-model="updateData.author" placeholder="author" type="text"/>
+    <input v-model="updateData.publisher" placeholder="publisher" type="text"/>
+    <input v-model.number="updateData.price" placeholder="price" type="number"/>
+    <button v-on:click="updateBook(idToUpdate)" class="btn btn-primary">Update</button>
+    <div>{{updateMessage}}</div>
 
     <h2>DELETE (id)</h2>
-    <input  placeholder="id" type="number" />
-    <button class="btn btn-warning">Delete</button>
+    <input v-model="idToDelete" placeholder="id" type="number" />
+    <button v-on:click="deleteBook(idToDelete)" class="btn btn-warning">Delete Book</button>
+    <div>{{deleteMessage}}</div>
     
 
   </div>
